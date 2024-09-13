@@ -60,10 +60,18 @@ Engineering, Cooperative Education has the highest mean (306.666...) seats. I wa
 ### **Q2** Find out the greatest number of times any individual class has been offered in our dataset. You must show the greatest number of classes first.
 
 ```{r}
-
+umd_courses |>
+  group_by(department) |>
+  summarize(
+    count_classes = n(),
+    sum_term = sum(term)
+  ) |>
+  arrange(desc(sum_term))
 ```
 
 **A2**
+
+I believe the answer is Business and Management, but I could also be wrong
 
 ------------------------------------------------------------------------
 
