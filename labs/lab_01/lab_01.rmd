@@ -61,17 +61,16 @@ Engineering, Cooperative Education has the highest mean (306.666...) seats. I wa
 
 ```{r}
 umd_courses |>
-  group_by(title) |>
+  group_by(id) |>
   summarize(
-    count_classes = n(),
-    sum_term = sum(term)
+    count_classes = n()
   ) |>
   arrange(desc(count_classes))
 ```
 
 **A2**
 
-Doctoral Dissertation Research has been offered the most (1,303).
+AASP100 has the most with 22.
 
 ------------------------------------------------------------------------
 
@@ -79,7 +78,7 @@ Doctoral Dissertation Research has been offered the most (1,303).
 
 ```{r}
 umd_courses |>
-  group_by(instructors) |>
+  group_by(instructors, department) |>
   summarize(
     count_courses = n()
   ) |>
@@ -88,7 +87,7 @@ umd_courses |>
 
 **A3**
 
-With the exception of courses that have not that have not been assigned an instructor (764), or those labeled 'N/A,' (10,996) Elsa Barkley Brown has taught the most about of courses (73).
+Keith Yearwood has taught the most with 61.
 
 ------------------------------------------------------------------------
 
@@ -110,14 +109,13 @@ I'm sure there is a way, but I would have sorted them the same way except edit t
 umd_courses |>
   group_by(title) |>
   summarize(
-    count_classes = n(),
-    sum_term = sum(term)
+    count_classes = n()
   ) |>
   arrange(desc(count_classes))
 ```
 
 **A5**
 
-For my third question in the pre_lab, I was wondering how many of the courses were possibly work.independent study. For this I could use the same code as question 2. Again the only thing I would change is finding a way to sort by specific class. Like sort by independent study or sort by internship. But I am not sure if you can do this or if you have to sort by title and then scroll till you find the title you are looking for.
+For my third question in the pre_lab, I was wondering how many of the courses were possibly independent study/internship. For this I could group by title and the count classes. The only thing I would change is finding a way to sort by specific class instead of all classes. Like sort by independent study or sort by internship. But I am not sure if you can do this or if you have to sort by title and then scroll till you find the title you are looking for.
 
 The answer to this is that Independent study has 443 and internships have 79.
