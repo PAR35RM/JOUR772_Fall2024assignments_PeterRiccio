@@ -61,27 +61,34 @@ Engineering, Cooperative Education has the highest mean (306.666...) seats. I wa
 
 ```{r}
 umd_courses |>
-  group_by(department) |>
+  group_by(title) |>
   summarize(
     count_classes = n(),
     sum_term = sum(term)
   ) |>
-  arrange(desc(sum_term))
+  arrange(desc(count_classes))
 ```
 
 **A2**
 
-I believe the answer is Business and Management, but I could also be wrong
+Doctoral Dissertation Research has been offered the most (1,303).
 
 ------------------------------------------------------------------------
 
 ### **Q3** Count the number of courses for each instructor and department. Which instructor has taught the most?
 
 ```{r}
-
+umd_courses |>
+  group_by(instructors) |>
+  summarize(
+    count_courses = n()
+  ) |>
+  arrange(desc(count_courses))
 ```
 
 **A3**
+
+With the exception of courses that have not that have not been assigned an instructor (764), or those labeled 'N/A,' (10,996) Elsa Barkley Brown has taught the most about of courses (73).
 
 ------------------------------------------------------------------------
 
@@ -93,12 +100,24 @@ I believe the answer is Business and Management, but I could also be wrong
 
 **A4**
 
+I'm sure there is a way, but I would have sorted them the same way except edit the code so it does not count courses that have not been assigned someone. So the ones labeled "TBA' or 'N/A' would not be part of the count.
+
 ------------------------------------------------------------------------
 
 ### **Q5** Take one of the questions you listed in the final question of the pre_lab and try to answer it here in code. If you don't know how to fully answer it, write what code you can and describe in words what else you would need to do. If you got an answer, is it interesting?
 
 ```{r}
-
+umd_courses |>
+  group_by(title) |>
+  summarize(
+    count_classes = n(),
+    sum_term = sum(term)
+  ) |>
+  arrange(desc(count_classes))
 ```
 
 **A5**
+
+For my third question in the pre_lab, I was wondering how many of the courses were possibly work.independent study. For this I could use the same code as question 2. Again the only thing I would change is finding a way to sort by specific class. Like sort by independent study or sort by internship. But I am not sure if you can do this or if you have to sort by title and then scroll till you find the title you are looking for.
+
+The answer to this is that Independent study has 443 and internships have 79.
