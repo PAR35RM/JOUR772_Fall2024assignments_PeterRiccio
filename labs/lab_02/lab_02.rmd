@@ -45,6 +45,8 @@ umd_courses |>
 
 **A1**
 
+I got 220 for the first part. It says 223 rows but I only counted 220. The the second part I got Geographical Sciences.
+
 ------------------------------------------------------------------------
 
 ### **Q2** Which departments have the most courses in the Fall 2023 term? And which departments in that term have at least one syllabus posted? How are the top departments different in each result? Where is Journalism in those results?
