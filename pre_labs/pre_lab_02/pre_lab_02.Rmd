@@ -359,4 +359,4 @@ Now that you have seen how to use mutate, filtering and dates, give me three que
 
 2.  I would want to know what professors teach only journalism classes versus those who might teach in more than 1 department.
 
-3.  If there is a way of separating core required courses from those that are electives.
+3.  If there is a way of separating core required courses from those that are electives/not required.
