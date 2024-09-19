@@ -357,6 +357,6 @@ Now that you have seen how to use mutate, filtering and dates, give me three que
 
 1.  I would want to learn how many Journalism classes involve sports or sports writing.
 
-2.  
+2.  I would want to know what professors teach only journalism classes versus those who might teach in more than 1 department.
 
-3.  
+3.  If there is a way of separating core required courses from those that are electives.
