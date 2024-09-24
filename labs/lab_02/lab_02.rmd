@@ -52,17 +52,22 @@ I got 220 for the first part. It says 223 rows but I only counted 220. The the s
 ### **Q2** Which departments have the most courses in the Fall 2023 term? And which departments in that term have at least one syllabus posted? How are the top departments different in each result? Where is Journalism in those results?
 
 ```{r}
-#greater than 0
+courses_2023 <- umd_courses |> filter(term > 202300) |> filter(syllabus_count >= 1)
+
+head(courses_2023)
 ```
 
 **A2**
+
+Not sure I coded this right as the answer I got is the American Studies department for part 1, and Journalism did not even show up on the table for the second part.
 
 ------------------------------------------------------------------------
 
 ### **Q3** Using the Maryland campaign expenses data, change the datatype of the expenditure_date column so that it is a date and not a chr. Then create a new column for the month based on expenditure_date. Then write code that shows total amount spent each month by Wes Moore's committee (you'll need to search the data to find the exact name). Write a sentence describing the pattern of spending over time.
 
 ```{r}
-#lubridate
+maryland_expenses |>
+  
 
 ```
 
@@ -73,7 +78,21 @@ I got 220 for the first part. It says 223 rows but I only counted 220. The the s
 ### **Q4** Using case_when(), create a column in the Maryland expenses data called `spending_location` indicating whether each record indicated money spent in Maryland or outside Maryland. For records that are in Maryland, make the new column's value "In-state" and for the others, make it "Out of state". Then write code that shows the total amount of money spent in each category and describe the results. You can do this in one statement or break it up into two statements (saving the new column to your dataframe).
 
 ```{r}
-#case when with string detect inside maryland or outside maryland
+maryland_expenses_with_state <- maryland_expenses |>
+  mutate(
+    state = case_when(
+        str_detect(address, " Maryland ") ~ "In-state",
+        str_detect(address, " California ") ~ "Out of State",
+        str_detect(address, " Washington ") ~ "Out of State",
+        str_detect(address, " Louisiana ") ~ "Out of State",
+        str_detect(address, " Florida ") ~ "Out of State",
+        str_detect(address, " North Carolina ") ~ "Out of State",
+        str_detect(address, " Massachusetts ") ~ "Out of State",
+        str_detect(address, " West Virginia ") ~ "Out of State",
+        str_detect(address, " Virginia ") ~ "Out of State",
+        .default = NA
+      )
+  )
 ```
 
 **A4**
@@ -83,7 +102,12 @@ I got 220 for the first part. It says 223 rows but I only counted 220. The the s
 ### **Q5** Choose your own adventure: using either the UMD courses or campaign expenses data, ask and answer a question that is different than the previous ones. You can use one of the ones you provided in the pre_lab.
 
 ```{r}
-
+umd_courses |>
+  filter(str_detect(title, "Sports")) |> filter(str_detect(id, "JOUR"))
 ```
 
+I would want to learn how many Journalism classes involve sports or sports writing.
+
 **A5**
+
+There are 80 Journalism classes involving sports or sports writing.
