@@ -66,19 +66,31 @@ Not sure I coded this right as the answer I got is the American Studies departme
 ### **Q3** Using the Maryland campaign expenses data, change the datatype of the expenditure_date column so that it is a date and not a chr. Then create a new column for the month based on expenditure_date. Then write code that shows total amount spent each month by Wes Moore's committee (you'll need to search the data to find the exact name). Write a sentence describing the pattern of spending over time.
 
 ```{r}
+maryland_expenses <- maryland_expenses |>
+mutate(expenditure_date=mdy(expenditure_date))
+
+head(maryland_expenses)
+
 maryland_expenses |>
+  mutate(month = floor_date(expenditure_date, "month")) |>
+  filter(str_detect(committee_name, "Moore")) |>
+  group_by(month) |>
+  summarise(total_amount = sum(amount)) |>
+  arrange(desc(total_amount))
   
 
 ```
 
 **A3**
 
+As time goes on he is gradually spending more and more.
+
 ------------------------------------------------------------------------
 
 ### **Q4** Using case_when(), create a column in the Maryland expenses data called `spending_location` indicating whether each record indicated money spent in Maryland or outside Maryland. For records that are in Maryland, make the new column's value "In-state" and for the others, make it "Out of state". Then write code that shows the total amount of money spent in each category and describe the results. You can do this in one statement or break it up into two statements (saving the new column to your dataframe).
 
 ```{r}
-maryland_expenses_with_state <- maryland_expenses |>
+spending_location <- maryland_expenses |>
   mutate(
     state = case_when(
         str_detect(address, " Maryland ") ~ "In-state",
@@ -90,12 +102,20 @@ maryland_expenses_with_state <- maryland_expenses |>
         str_detect(address, " Massachusetts ") ~ "Out of State",
         str_detect(address, " West Virginia ") ~ "Out of State",
         str_detect(address, " Virginia ") ~ "Out of State",
-        .default = NA
+        .default = "out of state"
       )
   )
+spending_location |>
+  group_by(state) |>
+  summarize(total = sum(amount)) |>
+  arrange(desc(total))
 ```
 
 **A4**
+
+In-state = 77723146
+
+Out of State = 33164994
 
 ------------------------------------------------------------------------
 
