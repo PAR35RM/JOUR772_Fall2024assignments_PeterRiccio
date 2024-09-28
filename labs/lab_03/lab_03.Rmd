@@ -62,7 +62,7 @@ pg_schools |>
 
 Q3. You're interested in examining the vendors paid for capital projects at the University of Maryland. Search the payments data to find those payments, then write code to produce a list of each vendor and the total amount it received. Look carefully at that list - what cleaning will it require to ensure that you have only one row per vendor and zip code? Provide at least three examples of vendor names that are similar and should be combined into one. Describe how you might clean that data so that any nearly identical vendors would look identical - what would you change and how?
 
-A3. You would use get_dupes() to clean out the duplicate names. Some examples are Whiting Turner,
+A3. You would use get_dupes() to clean out the duplicate names. Some examples are Whiting Turner, Contracting Company vs Contracting CO, Plano Coudon vs Plano Condon, and Olympus America LLC. and Olympus America LLC without a (.). I would then us case_when and decide on whichever version of the name is better and change all similar ones to the now 'correct' name.
 
 ```{r}
 payments |> filter(str_detect(agency_name, "CAPITAL PROJECTS- UNIVERSITY OF MARYLAND")) |>
@@ -73,7 +73,7 @@ payments |> filter(str_detect(agency_name, "CAPITAL PROJECTS- UNIVERSITY OF MARY
 
 Q4: You want to understand how much state grant money went to stem cell research projects each fiscal year. Search the data to find grants that fit that description. Once you find which columns contain the information you want, your code should standardize the data needed to find just the grants for stem cell research in a single filter. Then create a total amount of money for each fiscal year. Write a sentence summarizing how stem cell research funding has changed over time.
 
-A4:
+A4: It has technically been steadily decreasing since 2012 where it reached it highest amount of money going in. It then went down to an average of around 6-7, going as low as 4 in 2021 but bouncing back to the 6-7 average in 2022.
 
 ```{r}
 library(lubridate)
