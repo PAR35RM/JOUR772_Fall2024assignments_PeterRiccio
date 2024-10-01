@@ -46,6 +46,9 @@ pg_schools <- payments|> filter(
   str_detect(vendor_name, "PRINCE GEORGES PUBLIC SCHOOLS") |
   str_detect(vendor_name, "PRINCE GEORGES COUNTY PUBLIC SCHOOL") |
   str_detect(vendor_name, "PRINCE GEORGES COUNTY PUBLIC SCHOOLS"))
+
+#correct, here is another way
+#shcool_name_finder <- md_payments |> filter(str_detect(vendor_name, "school")) |> group_by(vendor_name) |> summarize(count = n())
   
 ```
 
@@ -58,6 +61,8 @@ pg_schools |>
   group_by(fiscal_year) |>
   summarise(total_amount = sum(amount)) |>
   arrange(desc(total_amount))
+
+#correct as is
 ```
 
 Q3. You're interested in examining the vendors paid for capital projects at the University of Maryland. Search the payments data to find those payments, then write code to produce a list of each vendor and the total amount it received. Look carefully at that list - what cleaning will it require to ensure that you have only one row per vendor and zip code? Provide at least three examples of vendor names that are similar and should be combined into one. Describe how you might clean that data so that any nearly identical vendors would look identical - what would you change and how?
@@ -69,6 +74,9 @@ payments |> filter(str_detect(agency_name, "CAPITAL PROJECTS- UNIVERSITY OF MARY
   group_by(vendor_name) |>
   summarise(total_amount = sum(amount)) |>
   arrange(desc(total_amount))
+
+#correct, here is another way
+#capital_projects_finder <- md_payments |> filter(str_detect(agency_name, "CAPITAL PROJECTS")) |> group_by(agency_name) |> summarize(count = n())
 ```
 
 Q4: You want to understand how much state grant money went to stem cell research projects each fiscal year. Search the data to find grants that fit that description. Once you find which columns contain the information you want, your code should standardize the data needed to find just the grants for stem cell research in a single filter. Then create a total amount of money for each fiscal year. Write a sentence summarizing how stem cell research funding has changed over time.
@@ -86,4 +94,13 @@ cleaned_grants_loans |>
   group_by(fiscal_year) |>
   summarise(total_amount = sum(amount)) |>
   arrange(desc(fiscal_year))
+
+#correct, here is another way
+
+#md_grants_loans |>
+ #mutate(description = str_to_upper (description)) |>
+ #filter(str_detect(description, "STEMCELL RESEARCH GRANT")) |>
+
+#group_by(fiscal_year) |>
+#summarize(total = sum(amount))
 ```
