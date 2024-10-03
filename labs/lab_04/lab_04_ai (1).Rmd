@@ -157,10 +157,15 @@ your_r_code_lab_response
 
 ```{r}
 #Add code below to talk to Groq and display its response
+idea_response <- axolotr::ask(
+  prompt = "I have a CSV file of daily data on crash incidents in montgomery county that gives local case number, acrs report type, crash date and time, as well as collision type. Using R and the tidyverse, suggest some ways that I could find patterns in the data. Use the new-style pipe operator (|>) in any code examples",
+  model = "llama-3.1-8b-instant"
+)
 
+print(idea_response)
 ```
 
-**Answer:**
+**Answer: It gives step by step instructions on how you would go about doing that as well as different patterns you might find. The only thing it does not explain is the significance of the data.**
 
 ------------------------------------------------------------------------
 
@@ -168,7 +173,12 @@ your_r_code_lab_response
 
 ```{r}
 #Add code below to talk to Groq and display its response
+idea_response <- axolotr::ask(
+  prompt = "Please write a 500-word news article about a car crash at the intersection between Knox Road and Regents Drive",
+  model = "llama-3.1-8b-instant"
+)
 
+print(idea_response)
 ```
 
-**Answer:**
+**Answer: Although it is a news article, it is not something real that happened and it uses fake quotes. But in terms of generating a good-sounding piece, it fulfilled the requirement.**
