@@ -149,7 +149,7 @@ your_r_code_lab_response <- axolotr::ask(
 your_r_code_lab_response
 ```
 
-**Answer: I like how it gives you suggestions on how to improve your answer.**
+**Answer: It said it was correct and well structured. When I ran it the first time it said there were ways to improve it and potential errors that could occur.**
 
 ------------------------------------------------------------------------
 
