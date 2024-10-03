@@ -22,7 +22,7 @@ Then we can load that library and, using your API key, setup your credentials:
 
 ```{r}
 library(axolotr)
-create_credentials(GROQ_API_KEY = "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")
+create_credentials(GROQ_API_KEY = "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")
 ```
 
 See that "Please restart your R session for changes to take effect."? Go ahead and do that; you'll need to rerun the `library()` function for axolotr, and let's load tidyverse while we're at it.
@@ -102,7 +102,6 @@ debug_response <- axolotr::ask(
   model = "llama-3.1-8b-instant"
 )
 
-debug_response
 ```
 
 The trouble is that if you run that several times, it will give you slightly different answers. Not fact machines. But you should be able to try some of the suggested solutions and see if any of them work. An even better use could be to pass in working code that you're not fully understanding and ask the LLM to explain it to you.
