@@ -68,7 +68,13 @@ A2.
 
 ```{r}
 calls |>
-  mutate(weekdays = wday(ymd(date), label = TRUE))
+  mutate(weekdays = wday(ymd(date), label = TRUE)) |>
+  group_by(weekdays) |>
+  summarise(
+    calls=n()
+  ) |>
+  arrange(desc(calls)) |>
+  mutate(pct_calls=calls/sum(calls)*100)
 ```
 
 Q3. Now let's look at locations. Which ones have the most calls? How would you describe them (feel free to search for more information on them)? Is there anything about the structure of the original data that might make you less confident in the counts by location or date?
@@ -76,7 +82,10 @@ Q3. Now let's look at locations. Which ones have the most calls? How would you d
 A3.
 
 ```{r}
-
+calls |>
+   group_by(location) |>
+  summarise(calls=n()) |>
+  arrange(desc(calls))
 ```
 
 Q4. What's the best story idea or question you've seen as a result of the work you've done in this lab?
