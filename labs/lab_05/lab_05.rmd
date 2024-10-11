@@ -53,7 +53,7 @@ calls <- read_csv("tabula-Baltimore County; Carey, Samantha log OD.csv",col_name
 
 Q1. Write code to generate the number of calls that occurred on each date. Which date in 2022 had the most overdose calls, and how many? Look at the total number of rows in your result and explore the range of dates - based on your result, do you believe there are any days with no overdose calls at all? Explain why or why not.
 
-A1.
+A1. 7/12/2022 and 10/04/2022 had the most with 23 calls. I would say no as yes the numbers do decrease the further back you go, but as long as it was a functioning line I think there would be at least 1 call.
 
 ```{r}
 calls |>
@@ -64,7 +64,7 @@ calls |>
 
 Q2. You want to understand if there's a pattern in the day of the week that overdose calls are made. Add a column to your dataframe that displays what day of the week each date represents. You should search for how to do that using lubridate. Then write code to calculate the number of calls for each day of the week, and add a column to that result that calculates the percentage of all calls that occurred on each day of the week (so you want a dataframe with the day of the week, total number of calls and the percentage of calls on that day out of the total number of all calls). Describe your findings to me.
 
-A2.
+A2. There are significantly more called Friday-Sunday which does not surprise me.
 
 ```{r}
 calls |>
@@ -79,7 +79,7 @@ calls |>
 
 Q3. Now let's look at locations. Which ones have the most calls? How would you describe them (feel free to search for more information on them)? Is there anything about the structure of the original data that might make you less confident in the counts by location or date?
 
-A3.
+A3. With the amount of numbers and abbreviations in the addresses, I would not be surprised if there are some overlapping that just happened to be written differently so they went unnoticed.
 
 ```{r}
 calls |>
@@ -90,4 +90,4 @@ calls |>
 
 Q4. What's the best story idea or question you've seen as a result of the work you've done in this lab?
 
-A4.
+A4. I would say something along the lines of time of day during the week vs weekend or location during the week vs weekend as maybe the neighborhoods have trends of when (both time and day) that numbers go up or down.
