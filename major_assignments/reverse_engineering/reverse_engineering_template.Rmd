@@ -80,9 +80,14 @@ baltimore_homicides <- baltimore_homicides |>
   )
 ```
 
+**This was as far as I could get but I could not get it to be one table and I could not figure out the percentage change. I thought about converting the "YES" and "NO" to 1s and 2s and change if from chr to num but I didn't think that would work as I think I would just get back a bunch of 1s and 2s without the read percent change.**
+
 ```{r}
 baltimore_homicides|>
-  group_by(year = "2014", year = "2017", disposition = "Closed by arrest", arrest_made = "NO")
+  filter(str_detect(year, "2014"))
+
+baltimore_homicides|>
+  filter(str_detect(year, "2017"))
 ```
 
 ### Sentence 2
