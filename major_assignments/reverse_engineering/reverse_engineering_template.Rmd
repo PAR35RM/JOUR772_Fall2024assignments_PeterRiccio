@@ -82,10 +82,7 @@ baltimore_homicides <- baltimore_homicides |>
 
 ```{r}
 baltimore_homicides|>
-  group_by(year)|>
-  summarise(arrest_made)|>
-  mutate(pct_change = (arrest_made = "YES"/arrest_made = "NO")*100)
-         
+  group_by(year = "2014", year = "2017", disposition = "Closed by arrest", arrest_made = "NO")
 ```
 
 ### Sentence 2
