@@ -66,7 +66,7 @@ county_combined|>
 
 Then calculate the most calls per county and location. Which location had the most calls - where and what is that location?
 
-A2.
+A2. The location that had the most was 314 Grove Neck Drive in Earleville which is a part of Cecil county.
 
 ```{r}
 county_combined <- county_combined |>
@@ -90,7 +90,7 @@ Add a column to your code that calculates the number of calls per 1,000 people f
 
 Which zip code has the highest rate of calls per 1,000 people? Find the neighborhoods in that zip code that are listed in the data - you can use group_by or distinct to do this. What are some of those neighborhoods?
 
-A3.
+A3. some of the areas are 21201, 21202, and 21205
 
 ```{r}
 baltimore_911_with_maryland_zcta|>
@@ -101,7 +101,11 @@ baltimore_911_with_maryland_zcta|>
 
 ### Q4. Choose your own adventure: I want you to come up with a question you could ask of the Baltimore City data that combines both the calls and the demographic information. You must use both demographics and the overdose call data in your work.
 
-A4:
+A4: I though it would be cool to see the total number of calls by district and zip code as some districts have more than one code. The answer was WD (21217) with 489 calls
 
 ```{r}
+baltimore_911_with_maryland_zcta|>
+  group_by(zcta5n, district)|>
+  summarise(total = n())|>
+  arrange(desc(total))
 ```
