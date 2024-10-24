@@ -1,5 +1,5 @@
 ---
-title: "Reverse Engineering Project"
+title: "Baltimore Homicides"
 author: "Peter, Liam, Andrew"
 date: "10/17/24"
 output:
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-In this notebook, we are reverse engineering the story, [The Story](https://www.washingtonpost.com/investigations/as-police-struggle-to-solve-homicides-baltimore-residents-see-an-open-season-for-killing/2018/12/26/7ee561e4-fb24-11e8-8c9a-860ce2a8148f_story.html)
+In this notebook, we are reverse engineering the story, [Baltimore homicides](https://www.washingtonpost.com/investigations/as-police-struggle-to-solve-homicides-baltimore-residents-see-an-open-season-for-killing/2018/12/26/7ee561e4-fb24-11e8-8c9a-860ce2a8148f_story.html)
 
 ## Load libraries
 
@@ -51,7 +51,7 @@ In this notebook, we are reverse engineering five sentences from the story.
 ### Sentence 1
 
 -   **Sentence text**: “City police made an arrest in 41 percent of homicides in 2014; last year, the rate was just 27 percent, a 14 percentage point drop.”
--   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
+-   **Analysis summary**: I think we were able to get close to the finding but could not confirm it 100%. We were able to filter by year but the last step in terms of percent drop I was not able to figure out.
 
 ```{r}
 # Put code to reverse engineer sentence here
@@ -80,7 +80,7 @@ baltimore_homicides <- baltimore_homicides |>
   )
 ```
 
-**This was as far as I could get but I could not get it to be one table and I could not figure out the percentage change. I thought about converting the "YES" and "NO" to 1s and 2s and change if from chr to num but I didn't think that would work as I think I would just get back a bunch of 1s and 2s without the read percent change.**
+This was as far as I could get but I could not get it to be one table and I could not figure out the percentage change. I thought about converting the "YES" and "NO" to 1s and 2s and change if from chr to num but I didn't think that would work as I think I would just get back a bunch of 1s and 2s without the read percent change.
 
 ```{r}
 baltimore_homicides|>
@@ -92,25 +92,44 @@ baltimore_homicides|>
 
 ### Sentence 2
 
--   **Sentence text**: [Paste in sentence to engineer here]
+-   **Sentence text**: Of 50 of the nation’s largest cities, Baltimore is one of 34 where police now make homicide arrests less often than in 2014, according to a Washington Post analysis.
 -   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
 
 ```{r}
-# Put code to reverse engineer sentence here
-
-# Display results of code below this codeblock
-
+homicide_data|>
+  group_by(city, year(date))|>
+  filter(str_detect(disposition, "Closed by arrest"))|>
+  summarise(total_homicides = sum(n()))|>
+  arrange(desc(total_homicides))
 ```
 
 ### Sentence 3
 
--   **Sentence text**: [Paste in sentence to engineer here]
--   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
+-   **Sentence text**: [There is an “indisputable” Freddie Gray effect] “And while most cities saw their arrest rates drop gradually, Baltimore’s decline was sudden — plummeting 15 percentage points in 2015, after Gray’s death, the largest single-year drop for any city already solving less than half its homicides
+-   **Analysis summary**: We want to show that from 2014 to 2015, Baltimore's arrest rate dropped by 15%.
 
 ```{r}
-# Put code to reverse engineer sentence here
+b2014_arrest <- baltimore_homicides |>
+  filter(str_detect(year(date), "2014"))|>
+  filter(str_detect(disposition, "Closed by arrest"))|>
+  summarise(n())
 
-# Display results of code below this codeblock
+b2014_homicides <- baltimore_homicides |>
+  filter(str_detect(year(date), "2014"))|>
+  summarise(n())
+
+b2015_arrest <- baltimore_homicides |>
+  filter(str_detect(year(date), "2015"))|>
+  filter(str_detect(disposition, "Closed by arrest"))|>
+  summarise(n())
+
+b2015_homicides <- baltimore_homicides |>
+  filter(str_detect(year(date), "2015"))|>
+  summarise(n())
+
+b2014_arrest/b2014_homicides
+b2015_arrest/b2015_homicides
+
 
 ```
 
