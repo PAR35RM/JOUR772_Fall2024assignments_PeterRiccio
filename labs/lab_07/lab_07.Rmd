@@ -56,6 +56,8 @@ v21 <- load_variables(2021, "acs5", cache=TRUE)|>
 
 ```{r}
 v21|>
+  group_by(concept, "median")|>
+  summarise(n())
 ```
 
 **Answer here:**
