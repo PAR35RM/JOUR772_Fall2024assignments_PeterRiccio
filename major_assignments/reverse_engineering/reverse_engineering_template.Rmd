@@ -35,11 +35,7 @@ library(lubridate)
 In this section, describe the source of the data, write a basic data dictionary for data you are working with, and discuss any caveats or issues you discovered working with this data.
 
 ```{r}
-# Load required data
 homicide_data <- read.csv('data/homicide-data.csv')
-# Path to data should be loaded from folder "data" i.e. read_csv("data/name_of_data.csv")
-
-# Clean required data and prepare for analysis if needed. 
 
 
 ```
@@ -93,20 +89,49 @@ baltimore_homicides|>
 ### Sentence 2
 
 -   **Sentence text**: Of 50 of the nation’s largest cities, Baltimore is one of 34 where police now make homicide arrests less often than in 2014, according to a Washington Post analysis.
--   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
+-   **Analysis summary**: We were able to show that Baltimore was one of the 34 cities where police now make homicide arrests less often than in 2014.
 
 ```{r}
-homicide_data|>
-  group_by(city, year(date))|>
-  filter(str_detect(disposition, "Closed by arrest"))|>
-  summarise(total_homicides = sum(n()))|>
-  arrange(desc(total_homicides))
+
+homicide_arrests_2014 <- homicide_data |> filter (str_detect(year(date), "2014"))
+
+homicide_arrests_2014 <- homicide_arrests_2014 |> filter(str_detect(disposition,"Closed by arrest")) |> group_by (city) |> summarise(arrests2014 = sum(n())) |> arrange(desc(arrests2014))
+
+homicides_2014 <- homicide_data |> filter(str_detect(year(date), "2014")) |> group_by (city)|> summarise (homicides2014 = sum(n()))
+
+homicides_and_arrests_2014 <- homicides_2014 |> full_join (homicide_arrests_2014, join_by(city))
+
+homicides_and_arrests_2014 <- homicides_and_arrests_2014 |> mutate(
+  arrest_rate_2014 = arrest_rate_2014 <- (arrests2014/homicides2014) * 100
+)
+
+homicide_arrests_2017 <- homicide_data |> filter(str_detect(year(date), "2017"))
+
+homicide_arrests_2017 <- homicide_arrests_2017 |> filter(str_detect(disposition,"Closed by arrest")) |> group_by (city) |> summarise(arrests2017 = sum(n())) |> arrange(desc(arrests2017))
+
+homicides_2017 <- homicide_data |> filter(str_detect(year(date), "2017")) |> group_by (city) |> summarise (homicides2017 = sum(n()))
+
+homicides_and_arrests_2017 <- homicides_2017 |> full_join (homicide_arrests_2017, join_by(city))
+
+homicides_and_arrests_2017 <- homicides_and_arrests_2017 |> mutate(
+  arrest_rate_2017 = arrest_rate_2017 <- (arrests2017/homicides2017) *100)
+
+combined_homicide_arrest_rates <- homicides_and_arrests_2014 |> inner_join(homicides_and_arrests_2017, join_by(city))
+
+combined_homicide_arrest_rates <- combined_homicide_arrest_rates |> mutate(
+  arrests_less_often = case_when(
+    arrest_rate_2014 >= arrest_rate_2017 ~ "YES",
+    arrest_rate_2014 < arrest_rate_2017 ~ "NO"
+  )
+)
+
+combined_homicide_arrest_rates |> filter(str_detect(arrests_less_often, "YES")) |> summarise (cities_with_fewer_arrests = sum(n()))
 ```
 
 ### Sentence 3
 
 -   **Sentence text**: [There is an “indisputable” Freddie Gray effect] “And while most cities saw their arrest rates drop gradually, Baltimore’s decline was sudden — plummeting 15 percentage points in 2015, after Gray’s death, the largest single-year drop for any city already solving less than half its homicides
--   **Analysis summary**: We want to show that from 2014 to 2015, Baltimore's arrest rate dropped by 15%.
+-   **Analysis summary**: We want to show that from 2014 to 2015, Baltimore's arrest rate dropped by 15%. Which we were able to do with following code.
 
 ```{r}
 b2014_arrest <- baltimore_homicides |>
