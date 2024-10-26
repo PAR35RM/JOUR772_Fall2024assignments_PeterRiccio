@@ -37,7 +37,7 @@ You'll need your Census API Key:
 **Task** set your API Key if you haven't already. You won't need to install or overwrite it.
 
 ```{r echo=FALSE}
-census_api_key("c6321c87497a080a34b1c17caefe5eff8d89044c", install=TRUE)
+census_api_key("c6321c87497a080a34b1c17caefe5eff8d89044c", install = TRUE, overwrite = TRUE)
 ```
 
 ## Load and view ACS variables
@@ -57,11 +57,8 @@ md_high_schools.csv <- read_csv("md_high_schools.csv")
 #### **Q1** What is the Maryland jurisdiction with the lowest median age, according to the ACS 2021 5-year estimates? You will need to find the variable for median age first (search for it in the 'concept' column at the data frame we just created).
 
 ```{r}
-
 median_age <- v21 |>
-  
-filter(concept =="MEDIAN AGE")
-
+  filter(concept =="MEDIAN AGE")
 median_age
 
 md_data <- get_acs(geography = "county",
@@ -69,21 +66,14 @@ md_data <- get_acs(geography = "county",
                    state = "MD",
                    year = 2021)
 
-
 lowest_median_age <- md_data |>
   arrange(estimate)
 
 lowest_median_age
 
-
-
-
-
-
-
 ```
 
-**Answer here:**
+**Answer here: Baltimore city at about 35.7**
 
 ------------------------------------------------------------------------
 
@@ -96,7 +86,7 @@ at_least_50
 
 ```
 
-**Answer here:**
+**Answer here: There are only two: Talbot County with 51 and Worcester County with 50.4**
 
 ------------------------------------------------------------------------
 
@@ -112,22 +102,60 @@ at_least_50
 Which zip code has the highest rate of calls? Which has the lowest?
 
 ```{r}
+montgomery_911 <- read.csv("data/montgomery_2022_overdoses.csv")|> clean_names()
+
+calls_zip <- montgomery_911|>
+  group_by(zip)|>
+  summarise(total_calls = n())
+
+acs_variable <- "B01001_001"
+
+md_pop_data <- get_acs(
+  geography = "zip code tabulation area",
+  variables = "B01001_001",
+  year = 2021
+)
+
+calls_and_pop <- calls_zip|>
+  mutate(zip = as.character(zip))|>
+  left_join(md_pop_data|>
+              select(GEOID, estimate), by = c("zip" = "GEOID"))|>
+  rename(population_18_and_up = estimate)
+
+calls_and_pop <- calls_and_pop|>
+  mutate(calls_per_1000 = (total_calls / population_18_and_up) * 1000)
+
+calls_and_pop
+
 ```
 
-**Answer here:**
+**Answer here: Zip code 20889 has the highest rate with 2.4 and zip code 20707 has the lowest with 0.02.**
 
 ------------------------------------------------------------------------
 
 #### **Q4** Using [CensusReporter.org](https://censusreporter.org/), examine the zip codes on Q3 with the highest and lowest rates and compare and contrast their demographic profiles. Is there a story here?
 
-**Answer here:**
+**Answer here: well if the zip codes are correct in Q3, than a place with an over 36k population has less calls than a place where the population is a measly 158.**
 
 ------------------------------------------------------------------------
 
 #### **Q5** Go back to your joined dataframe from Q3 and add two more columns representing the minimum and maximum populations based on the estimate and margin of error, then calculate per capita rates for each. Do you get the same two zip codes for the highest and lowest as you did before? Does that give you more or less confidence in your answers to Q3?
 
 ```{r}
+calls_and_pop <- calls_zip|>
+  mutate(zip = as.character(zip))|>
+  left_join(md_pop_data|> select(GEOID, estimate, moe), by = c("zip" = "GEOID")) |>
+  rename(population_18_and_up = estimate)
 
+
+calls_and_pop <- calls_and_pop|>
+  mutate(
+    min_population = population_18_and_up - moe,
+    max_population = population_18_and_up + moe,
+    calls_per_1000_min = (total_calls / min_population) *1000,
+    calls_per_1000_max = (total_calls / max_population) *1000
+  )
+calls_and_pop
 ```
 
-**Answer here:**
+**Answer here: Not sure if I did this right but based on the calls per 1000 min the answer is zip code 20889 with -26 and the calls per 1000 max is zip code 20877 with 1.2. based on this it gives me less confidence in my answer to Q3.**
