@@ -131,6 +131,8 @@ calls_and_pop
 
 **Answer here: Zip code 20889 has the highest rate with 2.4 and zip code 20707 has the lowest with 0.02.**
 
+*For this I was having problems with the zip code tabulation area part and it kept coming back with API error for something about geographical hierarchy. So I pasted the formula into ChatGPT and said that I think the code is right but I keep getting this error. It said "The "unknown/unsupported geography hierarchy" error usually indicates that the `geography` parameter is either incorrectly specified or unsupported for the state or variable in question. In this case, `"zip code tabulation area"` might be causing issues when combined with `state = "MD"`." so I took that out and it seemed to work.*
+
 ------------------------------------------------------------------------
 
 #### **Q4** Using [CensusReporter.org](https://censusreporter.org/), examine the zip codes on Q3 with the highest and lowest rates and compare and contrast their demographic profiles. Is there a story here?
@@ -159,3 +161,5 @@ calls_and_pop
 ```
 
 **Answer here: Not sure if I did this right but based on the calls per 1000 min the answer is zip code 20889 with -26 and the calls per 1000 max is zip code 20877 with 1.2. based on this it gives me less confidence in my answer to Q3.**
+
+*For this one I forgot that you had to specify the margin of error so I asked chat GPT and it said I had to put it as one of the categories that I was going to join by. So I added it into my left_join under the select part and I think it worked.*
