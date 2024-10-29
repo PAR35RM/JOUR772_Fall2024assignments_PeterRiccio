@@ -174,7 +174,7 @@ And now we'll apply the economist theme from that package with theme_economist()
 
 ### Task 10: Run the following code
 
-**Task** Run the following code. Explain what you see after running the code in the space below. What has changed from the last version of the chart? **Answer**
+**Task** Run the following code. Explain what you see after running the code in the space below. What has changed from the last version of the chart? **Answer The theme changed. The background is now not a boring gray. the background lines changed to white and the overall format has improved.**
 
 ```{r}
 maryland_top_counties |>
