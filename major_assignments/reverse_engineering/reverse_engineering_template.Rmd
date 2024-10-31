@@ -186,9 +186,21 @@ arrest_sum|>
 -   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
 
 ```{r}
-# Put code to reverse engineer sentence here
+city_year <- homicide_data |> group_by(year(date), city) |> summarise(homicides = sum(n())) |> rename ('year' = 'year(date)')
 
-# Display results of code below this codeblock
+city_year_wide <- dcast(city_year, city ~ year)
+
+city_year_wide <- city_year_wide |> rename('h2007' = '2007', 'h2008' = '2008', 'h2009' = '2009', 'h2010' = '2010', 'h2011' = '2011', 'h2012' = '2012', 'h2013' = '2013', 'h2014' = '2014', 'h2015' = '2015', 'h2016' = '2016', 'h2017' = '2017')
+
+
+city_year_wide <- city_year_wide |> mutate (past_three = (h2015 + h2016 + h2017))
+
+
+top_thirty <- city_year_wide |> group_by (past_three) |> arrange (desc(past_three)) |> head(30)
+
+baltimore_increase <- top_thirty |> filter(str_detect(city, "Baltimore"))
+
+baltimore_increase <- baltimore_increase |> mutate (total = (h2007 + h2008 + h2009 + h2010 + h2011 + h2012 + h2013 + h2014 + h2015 + h2016 + h2017))
 
 ```
 
