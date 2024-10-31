@@ -28,6 +28,7 @@ Loading required libraries for this analysis.
 library(tidyverse)
 library(janitor)
 library(lubridate)
+library(dplyr)
 ```
 
 ## Load and Cleaning Data
@@ -89,7 +90,7 @@ baltimore_homicides|>
 ### Sentence 2
 
 -   **Sentence text**: Of 50 of the nation’s largest cities, Baltimore is one of 34 where police now make homicide arrests less often than in 2014, according to a Washington Post analysis.
--   **Analysis summary**: We were able to show that Baltimore was one of the 34 cities where police now make homicide arrests less often than in 2014.
+-   **Analysis summary**: We were able to show that Baltimore was one of the 34 cities where police now make homicide arrests less often than in 2014. We filtered for 2014 closed by arrest, did the same thing for 2017, then joined the two dataframes, then got the percentages of arrests for both years.
 
 ```{r}
 
@@ -131,7 +132,7 @@ combined_homicide_arrest_rates |> filter(str_detect(arrests_less_often, "YES")) 
 ### Sentence 3
 
 -   **Sentence text**: [There is an “indisputable” Freddie Gray effect] “And while most cities saw their arrest rates drop gradually, Baltimore’s decline was sudden — plummeting 15 percentage points in 2015, after Gray’s death, the largest single-year drop for any city already solving less than half its homicides
--   **Analysis summary**: We want to show that from 2014 to 2015, Baltimore's arrest rate dropped by 15%. Which we were able to do with following code.
+-   **Analysis summary**: We want to show that from 2014 to 2015, Baltimore's arrest rate dropped by 15%. Which we were able to do with following code. so we created two separate tables of each year so that way we could do the math for the percentages.
 
 ```{r}
 b2014_arrest <- baltimore_homicides |>
@@ -160,13 +161,22 @@ b2015_arrest/b2015_homicides
 
 ### Sentence 4
 
--   **Sentence text**: [Paste in sentence to engineer here]
--   **Analysis summary**: [Write up two to three sentences describing the results of your analysis. Were you able to confirm the finding? If not, why not?]
+-   **Sentence text**: Of the 1,002 homicides between 2015 and the beginning of this year, just 252 — one out of every four — resulted in an arrest.
+-   **Analysis summary**: We want to show that between 2015 and now (2017), 25% cases ended in arrest. What the code did was filter by the rand of years we wanted. Then made a second dataframe to show the arrests and well as which were yes and which were no. Then we got the percent of which were yes out of those 1,002 total. This did end up being 25%
 
 ```{r}
-# Put code to reverse engineer sentence here
+homicides_2015_to_2017 <- baltimore_homicides|>
+  filter(year >= 2015 & year <= 2017)
 
-# Display results of code below this codeblock
+arrest_sum <- homicides_2015_to_2017|>
+  group_by(arrest_made)|>
+  summarise(count = n())
+
+arrest_sum|>
+  mutate(pct = (count / 1002) *100)
+
+
+
 
 ```
 
