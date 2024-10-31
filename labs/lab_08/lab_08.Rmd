@@ -86,7 +86,27 @@ top10_ballots |>
 **A2.**
 
 ```{r}
+ballot <- md_absentee_ballots |>
+  mutate(pct_dem = (dem_received / total_received) * 100)|>
+  mutate(pct_rep = (rep_received / total_received) * 100)|>
+  mutate(pct_diff = pct_dem - pct_rep)|>
+  arrange(pct_dem)|>
+  head(10)
 
+ballot
+
+ballot|>
+ ggplot() +
+  geom_bar(aes(x=reorder(county_name, pct_diff), weight=pct_diff))+
+  coord_flip()+
+  labs(
+    title="Top 10 counties with most returned absentee ballots",
+    x = "County",
+    y = "Percentage of Returned Ballots",
+    caption = "source: Maryland State Board of Elections"
+    
+  )
+ 
 ```
 
 **Q3** Let's make a line chart using the second set of absentee ballot data - this one tracking returns by date. We want to see received ballots for Frederick County for Democrats, Republicans and Others, so you'll make a chart with three lines, adding color to each one (you can choose, but choose sensibly). Give the chart a title and good labels. What's the story that this line chart tells? Compare and contrast the three lines. Does it match what you know about absentee voting habits?
@@ -94,7 +114,18 @@ top10_ballots |>
 **A3**
 
 ```{r}
+Frederick_county <- md_absentee_ballots_date|>
+  filter(county_name == "FREDERICK")
 
+Frederick_county|>
+  ggplot() + 
+  geom_line(aes(x=date, y= dem_received, color = "Democrats"))+
+  geom_line(aes(x=date, y= rep_received, color = "Republicans"))+ 
+  geom_line(aes(x=date, y= oth_received, color = "Others"))+
+  scale_x_date(date_breaks = "1 week", date_labels = "%b %d") +
+  theme(
+    axis.text.x = element_text(angle = 45,  hjust=1)
+  )
 ```
 
 **Q4.** A scatterplot is a type of chart that helps us see relationships between two variables. One variable goes on the x axis, the other on the y axis. For each row/observation in our data, a scatterplot puts a circle (or a "point") where the two variables intersect on a grid.
@@ -119,5 +150,5 @@ Follow these steps:
 
 ```{r}
 
-  
+
 ```
