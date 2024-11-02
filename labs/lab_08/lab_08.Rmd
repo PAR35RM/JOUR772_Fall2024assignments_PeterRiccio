@@ -53,7 +53,7 @@ md_absentee_ballots_date <- read_csv("md_absentee_ballots_date.csv")|> clean_nam
 -   Good labels for the x & y axis and a caption for the source, which is the Maryland State Board of Elections
 -   Readable bars - the values shouldn't be overlapping
 
-**A1.**
+**A1. Worcester**
 
 ```{r}
 md_absentee_ballots <- md_absentee_ballots |> 
@@ -83,7 +83,7 @@ top10_ballots |>
 -   Arrange the dataframe to show the counties with the smallest percentage of returned ballots from Democrats first.
 -   Use ggplot to make a horizontal bar chart that shows just the first 10 counties, with the length of the bar determined by the county's percentage of ballots returned by Democrats. Give it an appropriate title, source, and x and y axis titles.
 
-**A2.**
+**A2. St. Mary's, Harford, Washington, Worcester, Carroll, Queen Anne's, Caroline, Cecil, Allegany, and Garrett.**
 
 ```{r}
 ballot <- md_absentee_ballots |>
@@ -111,7 +111,7 @@ ballot|>
 
 **Q3** Let's make a line chart using the second set of absentee ballot data - this one tracking returns by date. We want to see received ballots for Frederick County for Democrats, Republicans and Others, so you'll make a chart with three lines, adding color to each one (you can choose, but choose sensibly). Give the chart a title and good labels. What's the story that this line chart tells? Compare and contrast the three lines. Does it match what you know about absentee voting habits?
 
-**A3**
+**A3 Democrats with the most, then republicans, and then other. I would say it does match up.**
 
 ```{r}
 Frederick_county <- md_absentee_ballots_date|>
@@ -146,7 +146,7 @@ Follow these steps:
 4.  Add a line of fit to the plot using geom_smooth (<https://ggplot2.tidyverse.org/reference/geom_smooth.html#ref-examples>). Specify the method as lm.
 5.  In the answer space below, describe what you see. In a general sense, how would you report out the main point(s) of this chart? Are there counties that seem to be over or under-performing in relation to the overall trend?
 
-**A4.**
+**A4. I see 5 counties that are out of the average range and everyone else is somewhat the same. Carroll looks like it could be considered under-performing while Baltimore County, PG, and Montgomery seem to be over-performing.**
 
 ```{r}
 md_absentee_ballots|>
