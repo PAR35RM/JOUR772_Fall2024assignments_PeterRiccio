@@ -24,6 +24,7 @@ library(tidyverse)
 library(janitor)
 library(tidycensus)
 library(tigris)
+library(sf)
 ```
 
 Let's explore Maryland elections, power outages and electric vehicle data and make some maps!
@@ -110,8 +111,7 @@ Then, calculate a per capita rate of electric & hybrid vehicles using the March 
 
 Finally, make a second county map showing the per capita rate. What counties stand out on this map? How is it different from the first one you made?
 
-I tried to do the last map but I ran into a problem I cannot figure out how to fix. It keeps saying "**Caused by error in \`compute_layer()\`:**
-! \`stat_sf()\` requires the following missing aesthetics: geometry." I tried asking chatGPT but what it gave me didn't really make any sense either
+I tried to do the last map but I ran into a problem I cannot figure out how to fix. It keeps saying "**Caused by error in \`compute_layer()\`:** ! \`stat_sf()\` requires the following missing aesthetics: geometry." I tried asking chatGPT but what it gave me didn't really make any sense either
 
 **A3.**
 
@@ -132,20 +132,37 @@ ggplot() +
 
 ```{r}
 #Merge geometries with EV data
-md_county_population <- get_acs(geography = "county",
-              variables = c(population = "B01001_001"),
-              year = 2021,
-              state = "MD")
+md_county_population <- get_acs(
+  geography = "county",
+  variables = c(population = "B01001_001"),
+  year = 2021,
+  state = "MD",
+  geometry = TRUE
+  )
 
-ev_population <- md_county_population |> inner_join(ev_counties, by = c('GEOID'))
-  
-ev_per_capita <- ev_population|>
-  mutate(per_capita = (march_2023/estimate))
+ev_counties <- st_as_sf(ev_counties)
 
+ev_population <- st_join(md_county_population, ev_counties, join = st_intersects)
+
+ev_per_capita <- ev_population |>
+  mutate(per_capita = march_2023 / estimate)
 
 ggplot() +
-  geom_sf(data= ev_per_capita, aes(fill= per_capita)) +
+  geom_sf(data = ev_per_capita, aes(fill = per_capita)) +
   theme_minimal() +
   scale_fill_binned()
 
 ```
+
+**There were two errors that it kept giving me and I was not able to figure out the first was "Caused by error in `compute_layer()`:
+! `stat_sf()` requires the following missing aesthetics: geometry." and the second was: "y should not have class sf; for spatial joins, use st_join"**
+
+**I had to ask ChatGPT how to sold this and. the follwoing was the code that it gave me that I had not already tried: *geometry = TRUE***
+
+***)***
+
+***ev_counties \<- st_as_sf(ev_counties)***
+
+***ev_population \<- st_join(md_county_population, ev_counties, join = st_intersects)***
+
+**This seemed to fix it except for what looks like a white lightning strike through Maryland. I am not sure if that is supposed to be there.**
