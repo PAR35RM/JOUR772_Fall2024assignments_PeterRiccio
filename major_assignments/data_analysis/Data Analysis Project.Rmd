@@ -1,0 +1,30 @@
+---
+title: "Data-analysis-project"
+author: "Peter Riccio"
+date: "2024-11-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Analysis Project
+
+```{r cars}
+library(tidyverse)
+library(janitor)
+library(tidycensus)
+library(tigris)
+library(sf)
+library(lubridate)
+```
+
+**Data:**
+
+```{r}
+data_P2024 <- read.csv("data/data_presidential_2024.csv") |> clean_names()
+data_P2024_county <- read.csv("data/data_presidential_2024_county.csv") |> clean_names()
+```
+
+**Explanation of Data:**
