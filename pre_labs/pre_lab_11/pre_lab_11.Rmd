@@ -279,7 +279,7 @@ Another popular use of text analysis is to measure the sentiment of a word - whe
 
 ### Task 14: Load the bing lexicon and produce sentiments for our 2022 and 2024 unique words
 
-**Task** Run the following code and describe the results. Do any of the sentiments seem incorrect or counter-intuitive? **Answer**
+**Task** Run the following code and describe the results. Do any of the sentiments seem incorrect or counter-intuitive? **Answer: I don't think there is anything incorrect about the code but to me what seems counter intuitive is why would you go through the process of getting the information and joining the two tables if at the end you are still viewing the two tables separately.**
 
 ```{r}
 bing <- get_sentiments("bing")
