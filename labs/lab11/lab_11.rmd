@@ -40,7 +40,7 @@ md_attorney_sanctions <- read_csv("data/md_attorney_sanctions.csv")
 ```
 
 ```{r}
-a_list_of_words <- c("the", "and", "is", "this", "that", "for")
+a_list_of_words <- c("the", "and", "is", "this", "that", "for", "to", "by")
 unique(a_list_of_words)
 ```
 
