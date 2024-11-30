@@ -40,23 +40,37 @@ md_attorney_sanctions <- read_csv("data/md_attorney_sanctions.csv")
 ```
 
 ```{r}
-#Create list of unique words
-#attorney
-#proceeding
-#the, and, there
+a_list_of_words <- c("the", "and", "is", "this", "that", "for")
+unique(a_list_of_words)
 ```
 
 ```{r}
-#Load stop words
+data("stop_words")
+
+stop_words <- stop_words |> 
+  add_row(word = "client") |> 
+  add_row(word = "justice") |> 
+  add_row(word = "respondent") |>
+  add_row(word = "clients")|>
+  add_row(word = "attorney")|>
+  add_row(word = "representation")
 
 ```
 
 ```{r}
-#Remove stop words from unique words list
+word_counts <- md_attorney_sanctions|>
+  unnest_tokens(word, text)|>
+  anti_join(stop_words)|>
+  count(word, sort = TRUE)|>
+  mutate(percentage = n / sum(n) * 100)
 
+top_10_words <- word_counts |>
+  slice_max(n, n = 10)
+
+top_10_words
 ```
 
-**A1.**
+**A1. The leading word is failing, I think that the words together are describing how someone failed to do something. whether it be mistrust, misconduct, etc.**
 
 ------------------------------------------------------------------------
 
@@ -64,17 +78,30 @@ md_attorney_sanctions <- read_csv("data/md_attorney_sanctions.csv")
 
 ```{r}
 # Check the task 12 on Pre-lab 11 to see if you can use that code
+trigram_counts <- md_attorney_sanctions |>
+  unnest_tokens(trigram, text, token = "ngrams", n = 3) |>
+  count(trigram, sort = TRUE)|>
+  mutate(percentage = n / sum(n) * 100)
 
+top_10_trigrams <- trigram_counts|>
+  slice_max(n, n = 10)
+
+top_10_trigrams
 ```
 
-**A2.**
+**A2. My top two were "for failing to" and "by consent on" meaning having not done something you were supposed to or with approval on something**
 
 ------------------------------------------------------------------------
 
 ##### **Q3.** Let's drop back down to more traditional text analysis - take the top trigram from Q2 and write code to see how many times it occurs in the text column in each fiscal year. What do you think the answer produced by your code suggests? What else could you do to try and clarify the most important reasons attorneys get sanctioned?
 
 ```{r}
+phrase_counts <- md_attorney_sanctions|>
+  filter(str_detect(text, "for failing to"))|>
+  group_by(fiscal_year)|>
+  summarize(count = n())
 
+phrase_counts
 ```
 
-**A3.**
+**A3. it really spiked since 2011 but then evened out to around the high 40s by 2020. I tried to filter out words like to, and for but for some reason it did not carry over. I think that could have yielded different results but failure to do something also does not surprise me for being at the top of the list.**
